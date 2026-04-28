@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Management System</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+    <div class="header-content">
+        <div class="logo">
+            <span class="logo-icon">👥</span>
+            <h1>Employee Management System</h1>
+        </div>
+        <div class="header-stats">
+            <div class="stat-badge">
+                Total Employees: <strong id="totalCount">0</strong>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="container">
+
+    <!-- ALERT MESSAGE BOX -->
+    <div id="alertBox" class="alert hidden"></div>
+
+    <!-- TOP ACTION BAR -->
+    <div class="action-bar">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="🔍 Search by name, department, job title..." />
+            <button onclick="searchEmployees()" class="btn btn-search">Search</button>
+            <button onclick="loadAllEmployees()" class="btn btn-secondary">Reset</button>
+        </div>
+        <button onclick="openAddModal()" class="btn btn-primary">+ Add New Employee</button>
+    </div>
+
+    <!-- EMPLOYEE TABLE -->
+    <div class="table-container">
+        <table class="employee-table">
+            <thead>
+                <tr>
+                    <th>#ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Department</th>
+                    <th>Job Title</th>
+                    <th>Salary (₹)</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="employeeTableBody">
+                <!-- Rows inserted by JavaScript -->
+                <tr>
+                    <td colspan="9" class="loading-text">Loading employees...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</main>
+
+<!-- ========== ADD / EDIT MODAL ========== -->
+<div id="employeeModal" class="modal hidden">
+    <div class="modal-overlay" onclick="closeModal()"></div>
+    <div class="modal-box">
+
+        <div class="modal-header">
+            <h2 id="modalTitle">Add New Employee</h2>
+            <button class="modal-close" onclick="closeModal()">✕</button>
+        </div>
+
+        <div class="modal-body">
+            <!-- Hidden: stores ID during update -->
+            <input type="hidden" id="employeeId" />
+
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label>First Name <span class="required">*</span></label>
+                    <input type="text" id="firstName" placeholder="e.g. Rahul" />
+                </div>
+
+                <div class="form-group">
+                    <label>Last Name <span class="required">*</span></label>
+                    <input type="text" id="lastName" placeholder="e.g. Sharma" />
+                </div>
+
+                <div class="form-group">
+                    <label>Email <span class="required">*</span></label>
+                    <input type="email" id="email" placeholder="e.g. rahul@company.com" />
+                </div>
+
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="text" id="phoneNumber" placeholder="e.g. 9876543210" maxlength="10" />
+                </div>
+
+                <div class="form-group">
+                    <label>Department <span class="required">*</span></label>
+                    <select id="department">
+                        <option value="">-- Select Department --</option>
+                        <option value="Engineering">Engineering</option>
+                        <option value="Human Resources">Human Resources</option>
+                        <option value="Finance">Finance</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="Sales">Sales</option>
+                        <option value="Operations">Operations</option>
+                        <option value="IT">IT</option>
+                        <option value="Legal">Legal</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Job Title <span class="required">*</span></label>
+                    <input type="text" id="jobTitle" placeholder="e.g. Software Engineer" />
+                </div>
+
+                <div class="form-group">
+                    <label>Salary (₹) <span class="required">*</span></label>
+                    <input type="number" id="salary" placeholder="e.g. 50000" min="0" />
+                </div>
+
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="status">
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button onclick="closeModal()" class="btn btn-secondary">Cancel</button>
+            <button onclick="saveEmployee()" class="btn btn-primary" id="saveBtn">Save Employee</button>
+        </div>
+
+    </div>
+</div>
+
+<!-- ========== DELETE CONFIRM MODAL ========== -->
+<div id="deleteModal" class="modal hidden">
+    <div class="modal-overlay" onclick="closeDeleteModal()"></div>
+    <div class="modal-box modal-small">
+        <div class="modal-header">
+            <h2>Confirm Delete</h2>
+        </div>
+        <div class="modal-body">
+            <p>Are you sure you want to delete <strong id="deleteEmployeeName"></strong>?</p>
+            <p class="text-muted">This action cannot be undone.</p>
+        </div>
+        <div class="modal-footer">
+            <button onclick="closeDeleteModal()" class="btn btn-secondary">Cancel</button>
+            <button onclick="confirmDelete()" class="btn btn-danger">Yes, Delete</button>
+        </div>
+    </div>
+</div>
+
+<script src="/js/app.js"></script>
+</body>
+</html>
